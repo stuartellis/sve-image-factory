@@ -1,0 +1,19 @@
+
+version: "3.50"
+
+tasks:
+  default:
+    cmds:
+      - task: list
+
+  list:
+    desc: List available tasks
+    cmds:
+      - "{{.TASK_EXE}} --list"
+
+  build:buildah:
+    desc: Builds a container image for Buildah
+    cmds:
+      - "podman build --device /dev/fuse --security-opt label=disable --tag '{{.IMAGE_TAG}}' docker/buildah"
+    vars:
+      IMAGE_TAG: image-builder:bootstrap

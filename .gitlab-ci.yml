@@ -1,0 +1,26 @@
+stages:
+  - bootstrap
+
+build-buildah-image:
+  stage: bootstrap
+  image: quay.io/buildah/stable:latest
+  variables:
+    BUILDAH_FORMAT: oci
+    BUILDAH_ISOLATION: chroot
+    # GitLab runners do not usually provide /dev/fuse, so use vfs storage
+    STORAGE_DRIVER: vfs
+    IMAGE_NAME: $CI_REGISTRY_IMAGE/buildah
+  rules:
+    - changes:
+        - docker/buildah/**/*
+        - .gitlab-ci.yml
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | buildah login --username "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+  script:
+    - buildah build --tag "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA" docker/buildah
+    - buildah push "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA"
+    - |
+      if [ "$CI_COMMIT_BRANCH" = "$CI_DEFAULT_BRANCH" ]; then
+        buildah tag "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA" "$IMAGE_NAME:latest"
+        buildah push "$IMAGE_NAME:latest"
+      fi
