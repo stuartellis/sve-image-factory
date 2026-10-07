@@ -16,6 +16,7 @@ RUN apt-get update \
         libcap2-bin \
         netavark \
         uidmap \
+        amazon-ecr-credential-helper \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

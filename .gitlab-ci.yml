@@ -17,7 +17,7 @@ build-buildah-image:
   before_script:
     - echo "$CI_REGISTRY_PASSWORD" | buildah login --username "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
   script:
-    - buildah build --tag "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA" docker/buildah
+    - buildah build --tag "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA" docker/image-builder
     - buildah push "$IMAGE_NAME:$CI_COMMIT_SHORT_SHA"
     - |
       if [ "$CI_COMMIT_BRANCH" = "$CI_DEFAULT_BRANCH" ]; then

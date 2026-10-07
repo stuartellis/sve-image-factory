@@ -11,9 +11,9 @@ tasks:
     cmds:
       - "{{.TASK_EXE}} --list"
 
-  build:buildah:
-    desc: Builds a container image for Buildah
+  build:image-builder:
+    desc: Builds a container image for building container images
     cmds:
-      - "podman build --device /dev/fuse --security-opt label=disable --tag '{{.IMAGE_TAG}}' docker/buildah"
+      - "docker build --device /dev/fuse --security-opt label=disable --tag '{{.IMAGE_TAG}}' docker/image-builder"
     vars:
       IMAGE_TAG: image-builder:bootstrap
