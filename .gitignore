@@ -1,0 +1,7 @@
+# Operating system
+.DS_Store
+thumbs.db
+
+# Generated products
+.gitlab-ci-local
+.task
